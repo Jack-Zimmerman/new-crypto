@@ -10,7 +10,7 @@ test()
 
 async function test(){
     const wallet = new Wallet("jack-wallet");
-    wallet.grab();
+    wallet.createNewWallet()
 }
 
 

@@ -75,9 +75,11 @@ class Chain{
                 }
                 else{
                     //remove transaction from block
-                    block.transactions.splice(block.transactions.indexOf(transac),1);
+                    await block.transactions.splice(block.transactions.indexOf(transac),1);
                 }
             }
+
+            resolve(true);
         })
     }
 
@@ -87,9 +89,6 @@ class Chain{
             const previousBlock = await this.grabLastBlock();
 
             if (previousBlock.header != block.previousHeader){
-                resolve(false);
-            }
-            else if (Block.sumTransactions(block) === 0){
                 resolve(false);
             }
             else{
