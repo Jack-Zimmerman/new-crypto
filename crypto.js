@@ -49,6 +49,25 @@ const generateTarget = (difficulty)=>{
 }
 
 
+const nonceHash = (header, nonce)=>{
+    return sha256(
+        BigInt(hexify(header)) + BigInt(hexify(nonce)).toString('16')
+    ) 
+}
+
+const tryNonceHash = (target, header, nonce) => {
+    const hash = nonceHash(header,nonce);
+
+    return BigInt(hexify(target)) >= BigInt(hexify(hash));
+}
+
+
+    //reward starts a 100 coins and halves every 100000 blocks
+    function getReward(height){
+        const epochs = Math.floor(height/100000);
+
+        return (100 * COIN) * Math.pow(0.5, epochs);
+    }
 
 
 
@@ -63,5 +82,8 @@ module.exports = {
     hexify, 
     Hashes, 
     addAndHash,
-    COINBASE
+    COINBASE,
+    nonceHash,
+    tryNonceHash,
+    getReward
 }

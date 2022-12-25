@@ -59,6 +59,8 @@ class Transaction{
     }
 
 
+
+    
     static createCoinBaseTransaction(address, amount){
         let transac = new Transaction(COINBASE, 0)
         transac.addOutput(address, amount)

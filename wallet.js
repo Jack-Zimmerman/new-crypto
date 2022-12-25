@@ -21,26 +21,32 @@ class Wallet{
     }
     
     checkIfExists(){
-        if (fileStream.existsSync(this.path)){
-            return true
-        }
-        else{
-            return false
-        }
+        return new Promise(async resolve =>{
+            if (fileStream.existsSync(this.path)){
+                resolve(true)
+            }
+            else{
+                resolve(false)
+            }
+        })
+        
     }
 
     //getOldWallet if exists
-    grab(){
-        if(this.checkIfExists()){
-            const wallet = JSON.parse(fileStream.readFileSync(this.path))
-            this.created = wallet.created
-            this.private = wallet.private
-            this.public = wallet.public
-            this.nonce = wallet.nonce
-        }
-        else{
-            throw new Error("wallet does not exist")
-        }
+    async grab(){
+        return new Promise(async resolve=>{
+            if(await this.checkIfExists()){
+                const wallet = JSON.parse(fileStream.readFileSync(this.path))
+                this.created = wallet.created
+                this.private = wallet.private
+                this.public = wallet.public
+                this.nonce = wallet.nonce
+                resolve()
+            }
+            else{
+                throw new Error("wallet does not exist")
+            }
+        })   
     }
 
     createNewWallet(){

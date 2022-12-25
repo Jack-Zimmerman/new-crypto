@@ -111,7 +111,7 @@ class Database{
                         else{
                             dataObj[output.reciever] = {
                                 balance: output.amount,
-                                nonce: 0
+                                noncesUsed: []
                             };
                         }
 
@@ -125,7 +125,7 @@ class Database{
                 else{
                     const dataObj = {[output.reciever] : {
                         balance: output.amount,
-                        nonce: 0
+                        noncesUsed: []
                     }};
 
                     fs.writeFile(filestring, JSON.stringify(dataObj), (err)=>{
@@ -156,15 +156,17 @@ class Database{
                     //is account a key
                     if (sender in dataObj){
                         const current = dataObj[sender];
+                        //add transaction to nonces used
+                        current.noncesUsed.push(transaction.nonce);
                         dataObj[sender] = {
                             balance: current.balance -amount,
-                            nonce: transaction.nonce
+                            noncesUsed : current
                         }
                     }
                     else{
                         dataObj[sender] = {
                             balance: amount,
-                            nonce: transaction.nonce
+                            noncesUsed: [transaction.nonce]
                         }
                     }
 
